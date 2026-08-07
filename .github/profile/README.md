@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://github.com/aisecuritygateway/aisecuritygateway">
-    <img alt="AI Security Gateway" src="https://aisecuritygateway.ai/og.png" width="600" />
+  <a href="https://github.com/occludra/gateway">
+    <img alt="Occludra — AI Security Gateway" src="https://occludra.ai/og.png" width="600" />
   </a>
 </p>
 
@@ -12,16 +12,16 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/aisecuritygateway/aisecuritygateway"><strong>Get Started</strong></a> ·
-  <a href="https://aisecuritygateway.ai/docs"><strong>Docs</strong></a> ·
-  <a href="https://aisecuritygateway.ai/open-source"><strong>OSS vs Cloud</strong></a> ·
-  <a href="https://aisecuritygateway.ai"><strong>Managed Cloud (1M free credits)</strong></a>
+  <a href="https://github.com/occludra/gateway"><strong>Get Started</strong></a> ·
+  <a href="https://occludra.ai/docs"><strong>Docs</strong></a> ·
+  <a href="https://occludra.ai/open-source"><strong>OSS vs Cloud</strong></a> ·
+  <a href="https://occludra.ai"><strong>Managed Cloud (1M free credits)</strong></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/aisecuritygateway/aisecuritygateway/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue?style=for-the-badge" alt="Apache 2.0" /></a>&nbsp;
-  <a href="https://github.com/aisecuritygateway/aisecuritygateway"><img src="https://img.shields.io/badge/Docker-Quickstart-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" /></a>&nbsp;
-  <a href="https://aisecuritygateway.ai/docs/openai-compatible-proxy"><img src="https://img.shields.io/badge/OpenAI_SDK-Compatible-10a37f?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI Compatible" /></a>
+  <a href="https://github.com/occludra/gateway/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue?style=for-the-badge" alt="Apache 2.0" /></a>&nbsp;
+  <a href="https://github.com/occludra/gateway"><img src="https://img.shields.io/badge/Docker-Quickstart-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" /></a>&nbsp;
+  <a href="https://occludra.ai/docs/openai-compatible-proxy"><img src="https://img.shields.io/badge/OpenAI_SDK-Compatible-10a37f?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI Compatible" /></a>
 </p>
 
 ---
@@ -30,7 +30,7 @@
 
 ```
                            ┌─────────────────────────────┐
-                           │        AISG Gateway          │
+                           │        Occludra Gateway      │
     ┌──────────┐           │                              │           ┌──────────────┐
     │          │  POST     │  1. Auth (API key)           │           │              │
     │ Your App ├──────────▸│  2. Resolve provider/model   │──────────▸│ LLM Provider │
@@ -68,8 +68,8 @@ AISG is an **OpenAI-compatible proxy** that acts as an AI firewall. It sits betw
 ## Quickstart (60 seconds)
 
 ```bash
-git clone https://github.com/aisecuritygateway/aisecuritygateway.git
-cd aisecuritygateway
+git clone https://github.com/occludra/gateway.git
+cd gateway
 cp .env.example .env        # add your provider key
 docker compose up --build   # gateway + presidio
 ```
@@ -103,7 +103,7 @@ response = client.chat.create(
 print(response.aisg_metadata.pii_detected)  # True
 ```
 
-Typed responses, structured errors, async support, and model discovery. → [Full SDK docs](https://github.com/aisecuritygateway/aisecuritygateway/tree/main/sdk/python)
+Typed responses, structured errors, async support, and model discovery. → [Full SDK docs](https://github.com/occludra/gateway/tree/main/sdk/python)
 
 ---
 
@@ -118,7 +118,7 @@ Typed responses, structured errors, async support, and model discovery. → [Ful
 | `PERSON`, `LOCATION` | `SLACK_WEBHOOK` | Developer mode exploits |
 | `IP_ADDRESS` | | |
 
-**13 entity types** out of the box — the [managed cloud](https://aisecuritygateway.ai) extends this to **30+** with OCR image scanning.
+**13 entity types** out of the box — the [managed cloud](https://occludra.ai) extends this to **30+** with OCR image scanning.
 
 ---
 
@@ -144,9 +144,9 @@ Typed responses, structured errors, async support, and model discovery. → [Ful
 
 ## OSS vs Managed Cloud
 
-This repo gives you the core AI security proxy. The managed [AI Security Gateway Cloud](https://aisecuritygateway.ai) adds everything you need to run it across teams at scale.
+This repo gives you the core AI security proxy. The managed [Occludra Cloud](https://occludra.ai) adds everything you need to run it across teams at scale.
 
-| | OSS (this repo) | [Cloud](https://aisecuritygateway.ai) |
+| | OSS (this repo) | [Cloud](https://occludra.ai) |
 |---|:---:|:---:|
 | PII detection & redaction (text) | 13 entity types | 28+ entity types |
 | OCR image scanning | — | Yes |
@@ -172,7 +172,7 @@ This repo gives you the core AI security proxy. The managed [AI Security Gateway
 | Hybrid VPC (prompts stay in your network) | — | Yes |
 | SLA & support | Community | Yes |
 
-> **Skip the setup?** [aisecuritygateway.ai](https://aisecuritygateway.ai) — everything here plus SSO, RBAC, SIEM, Hybrid VPC, dashboards, smart cost routing, and 600+ models. 1M free credits, no credit card.
+> **Skip the setup?** [occludra.ai](https://occludra.ai) — everything here plus SSO, RBAC, SIEM, Hybrid VPC, dashboards, smart cost routing, and 600+ models. 1M free credits, no credit card.
 
 ---
 
@@ -185,21 +185,21 @@ This repo gives you the core AI security proxy. The managed [AI Security Gateway
 ---
 
 <p align="center">
-  <a href="https://github.com/aisecuritygateway/aisecuritygateway"><strong>⭐ Star the repo</strong></a> ·
-  <a href="https://aisecuritygateway.ai/open-source"><strong>Learn more</strong></a> ·
-  <a href="https://aisecuritygateway.ai"><strong>Try the managed cloud free</strong></a>
+  <a href="https://github.com/occludra/gateway"><strong>⭐ Star the repo</strong></a> ·
+  <a href="https://occludra.ai/open-source"><strong>Learn more</strong></a> ·
+  <a href="https://occludra.ai"><strong>Try the managed cloud free</strong></a>
 </p>
 
 <p align="center">
   <sub>
-    <a href="https://aisecuritygateway.ai/security">Security</a> ·
-    <a href="https://github.com/aisecuritygateway/aisecuritygateway/blob/main/LICENSE">License (Apache 2.0)</a> ·
+    <a href="https://occludra.ai/security">Security</a> ·
+    <a href="https://github.com/occludra/gateway/blob/main/LICENSE">License (Apache 2.0)</a> ·
     <a href="https://linkedin.com/company/ai-security-gateway">LinkedIn</a> ·
-    <a href="https://x.com/AISGateway">X / Twitter</a> ·
+    <a href="https://x.com/occludra">X / Twitter</a> ·
     <a href="https://www.youtube.com/@AISecurityGateway">YouTube</a>
   </sub>
 </p>
 
 <p align="center">
-  <sub>Built by <a href="https://aisecuritygateway.ai">Datum Fuse LLC</a> — making AI safe by default.</sub>
+  <sub>Built by <a href="https://occludra.ai">Datum Fuse LLC</a> — making AI safe by default.</sub>
 </p>

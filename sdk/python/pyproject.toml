@@ -5,12 +5,12 @@ build-backend = "hatchling.build"
 [project]
 name = "aisg"
 dynamic = ["version"]
-description = "Python SDK for AI Security Gateway — PII redaction, prompt injection defense, and smart routing for any LLM."
+description = "Python SDK for Occludra (AI Security Gateway) — PII redaction, prompt injection defense, and smart routing for any LLM."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.9"
 authors = [
-    { name = "Datum Fuse LLC", email = "contact@aisecuritygateway.ai" },
+    { name = "Datum Fuse LLC", email = "contact@occludra.ai" },
 ]
 keywords = [
     "ai",
@@ -43,11 +43,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://aisecuritygateway.ai"
-Documentation = "https://aisecuritygateway.ai/docs"
-Repository = "https://github.com/aisecuritygateway/aisecuritygateway"
-Issues = "https://github.com/aisecuritygateway/aisecuritygateway/issues"
-Changelog = "https://github.com/aisecuritygateway/aisecuritygateway/blob/main/sdk/python/CHANGELOG.md"
+Homepage = "https://occludra.ai"
+Documentation = "https://occludra.ai/docs"
+Repository = "https://github.com/occludra/gateway"
+Issues = "https://github.com/occludra/gateway/issues"
+Changelog = "https://github.com/occludra/gateway/blob/main/sdk/python/CHANGELOG.md"
 
 [tool.hatch.version]
 path = "aisg/_version.py"

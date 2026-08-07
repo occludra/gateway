@@ -1,6 +1,6 @@
-# Contributing to AISG
+# Contributing to Occludra
 
-Thanks for your interest in contributing to AI Security Gateway.
+Thanks for your interest in contributing to Occludra.
 
 ## Getting Started
 

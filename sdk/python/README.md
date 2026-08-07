@@ -1,10 +1,10 @@
-# aisg — AI Security Gateway Python SDK
+# aisg — Occludra Python SDK
 
 [![PyPI](https://img.shields.io/pypi/v/aisg.svg)](https://pypi.org/project/aisg/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
-Python SDK for [AI Security Gateway](https://aisecuritygateway.ai) — PII redaction, prompt injection defense, and smart cost routing for any LLM.
+Python SDK for [Occludra](https://occludra.ai) — PII redaction, prompt injection defense, and smart cost routing for any LLM.
 
 Works with both the **managed cloud** service and **self-hosted** (Docker) deployments.
 
@@ -111,7 +111,7 @@ response = client.chat.create(
 
 ### OpenAI SDK Compatibility
 
-The AISG API is fully OpenAI-compatible. You can also use the OpenAI SDK directly:
+The Occludra API is fully OpenAI-compatible. You can also use the OpenAI SDK directly:
 
 ```python
 from openai import OpenAI
@@ -127,7 +127,7 @@ response = client.chat.completions.create(
 )
 ```
 
-The AISG SDK adds typed metadata, structured error handling, and model discovery on top.
+The Occludra SDK adds typed metadata, structured error handling, and model discovery on top.
 
 ## Model Discovery
 
@@ -228,10 +228,10 @@ All responses are typed dataclasses:
 
 ## Links
 
-- [Documentation](https://aisecuritygateway.ai/docs)
-- [OpenAPI Spec](https://aisecuritygateway.ai/openapi.yaml)
-- [GitHub](https://github.com/aisecuritygateway/aisecuritygateway)
-- [Status](https://status.aisecuritygateway.ai)
+- [Documentation](https://occludra.ai/docs)
+- [OpenAPI Spec](https://occludra.ai/openapi.yaml)
+- [GitHub](https://github.com/occludra/gateway)
+- [Status](https://status.occludra.ai)
 
 ## License
 

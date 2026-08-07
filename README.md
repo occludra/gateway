@@ -1,23 +1,23 @@
-[![Managed Cloud](https://img.shields.io/badge/Managed_Cloud-aisecuritygateway.ai-blue)](https://aisecuritygateway.ai)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/aisecuritygateway/aisecuritygateway/blob/main/LICENSE)
-[![CodeQL](https://github.com/aisecuritygateway/aisecuritygateway/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/aisecuritygateway/aisecuritygateway/actions/workflows/github-code-scanning/codeql)
-[![Known Vulnerabilities](https://snyk.io/test/github/aisecuritygateway/aisecuritygateway/badge.svg)](https://snyk.io/test/github/aisecuritygateway/aisecuritygateway)
+[![Managed Cloud](https://img.shields.io/badge/Managed_Cloud-occludra.ai-blue)](https://occludra.ai)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/occludra/gateway/blob/main/LICENSE)
+[![CodeQL](https://github.com/occludra/gateway/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/occludra/gateway/actions/workflows/github-code-scanning/codeql)
+[![Known Vulnerabilities](https://snyk.io/test/github/occludra/gateway/badge.svg)](https://snyk.io/test/github/occludra/gateway)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12812/badge)](https://www.bestpractices.dev/projects/12812)
-[![OpenAI Compatible](https://img.shields.io/badge/OpenAI_SDK-Compatible-10a37f?logo=openai&logoColor=white)](https://aisecuritygateway.ai/docs/openai-compatible-proxy)
-[![Star on GitHub](https://img.shields.io/badge/GitHub-Star_⭐-yellow)](https://github.com/aisecuritygateway/aisecuritygateway/stargazers)
-[![Last Commit](https://img.shields.io/github/last-commit/aisecuritygateway/aisecuritygateway)](https://github.com/aisecuritygateway/aisecuritygateway/commits/main)
+[![OpenAI Compatible](https://img.shields.io/badge/OpenAI_SDK-Compatible-10a37f?logo=openai&logoColor=white)](https://occludra.ai/docs/openai-compatible-proxy)
+[![Star on GitHub](https://img.shields.io/badge/GitHub-Star_⭐-yellow)](https://github.com/occludra/gateway/stargazers)
+[![Last Commit](https://img.shields.io/github/last-commit/occludra/gateway)](https://github.com/occludra/gateway/commits/main)
 
-# AISG — AI Security Gateway
+# Occludra — AI Security Gateway
 
 ### Open-source AI firewall & LLM proxy with built-in PII redaction, prompt injection blocking, secret leak prevention, and enterprise governance (SSO, RBAC, SIEM).
 
-AISG is a vendor-neutral AI governance layer that sits between your application and any LLM provider. It scans every request for sensitive data and attacks — and redacts or blocks them before anything reaches the model. Self-hosted via Docker, OpenAI SDK compatible, Apache 2.0.
+Occludra is a vendor-neutral AI governance layer that sits between your application and any LLM provider. It scans every request for sensitive data and attacks — and redacts or blocks them before anything reaches the model. Self-hosted via Docker, OpenAI SDK compatible, Apache 2.0.
 
-> *Your LLM provider should never see your users' emails, SSNs, or API keys. AISG makes sure it doesn't.*
+> *Your LLM provider should never see your users' emails, SSNs, or API keys. Occludra makes sure it doesn't.*
 
-> **Prefer zero setup?** Try the managed cloud version free → [aisecuritygateway.ai](https://aisecuritygateway.ai) — 1M credits, no credit card required.
+> **Prefer zero setup?** Try the managed cloud version free → [occludra.ai](https://occludra.ai) — 1M credits, no credit card required.
 
-### Why AISG?
+### Why Occludra?
 
 - **PII redaction** — emails, phone numbers, credit cards, SSNs, names, locations, IP addresses
 - **Secret detection** — API keys, AWS credentials, GitHub tokens, private keys
@@ -33,7 +33,7 @@ AISG is a vendor-neutral AI governance layer that sits between your application 
 - **Hybrid VPC deployment** — compiled Go proxy in your network, prompts never leave your VPC (cloud)
 
 ```
-Your App  ──▸  AISG Gateway  ──▸  Presidio (PII scan)  ──▸  LLM Provider
+Your App  ──▸  Occludra Gateway  ──▸  Presidio (PII scan)  ──▸  LLM Provider
                     │                                            │
                     │◂── redacted or blocked ──────────────────▸│
                     │◂── clean response ────────────────────────│
@@ -43,7 +43,7 @@ Your App  ──▸  AISG Gateway  ──▸  Presidio (PII scan)  ──▸  LL
 
 ### Who is this for?
 
-| Use case | How AISG helps |
+| Use case | How Occludra helps |
 |---|---|
 | **Building AI features into your app** | Prevent user PII from leaking into LLM prompts — emails, SSNs, credit cards auto-redacted |
 | **Using ChatGPT/Claude APIs in production** | Drop-in proxy that adds security without changing your code |
@@ -55,7 +55,7 @@ Your App  ──▸  AISG Gateway  ──▸  Presidio (PII scan)  ──▸  LL
 
 ---
 
-> ☁️ **Want it managed?** Skip Docker entirely → [aisecuritygateway.ai](https://aisecuritygateway.ai) — 1M free credits, no credit card, 600+ models, smart routing, SAML SSO, RBAC, SIEM connectors, Hybrid VPC, and EU AI Act compliance logging.
+> ☁️ **Want it managed?** Skip Docker entirely → [occludra.ai](https://occludra.ai) — 1M free credits, no credit card, 600+ models, smart routing, SAML SSO, RBAC, SIEM connectors, Hybrid VPC, and EU AI Act compliance logging.
 
 ---
 
@@ -64,8 +64,8 @@ Your App  ──▸  AISG Gateway  ──▸  Presidio (PII scan)  ──▸  LL
 **Prerequisites:** Docker and Docker Compose.
 
 ```bash
-git clone https://github.com/aisecuritygateway/aisecuritygateway.git
-cd aisecuritygateway
+git clone https://github.com/occludra/gateway.git
+cd gateway
 ```
 
 **1. Configure**
@@ -135,7 +135,7 @@ print(response.choices[0].message.content)
 # The LLM never saw the SSN — it was redacted before forwarding.
 ```
 
-**5. Or use the AISG Python SDK**
+**5. Or use the Occludra Python SDK**
 
 ```bash
 pip install aisg
@@ -154,11 +154,11 @@ print(response.aisg_metadata.pii_detected)        # True
 print(response.aisg_metadata.entity_types_detected) # ["US_SSN"]
 ```
 
-The SDK adds typed responses, structured error handling (`DLPBlockError`, `BudgetExhaustedError`, `LoopDetectedError`), async support, and model discovery. Works with both self-hosted and [managed cloud](https://aisecuritygateway.ai) deployments. → [Full SDK docs](sdk/python/README.md)
+The SDK adds typed responses, structured error handling (`DLPBlockError`, `BudgetExhaustedError`, `LoopDetectedError`), async support, and model discovery. Works with both self-hosted and [managed cloud](https://occludra.ai) deployments. → [Full SDK docs](sdk/python/README.md)
 
 ---
 
-> **Skip the setup?** The managed version at [aisecuritygateway.ai](https://aisecuritygateway.ai)
+> **Skip the setup?** The managed version at [occludra.ai](https://occludra.ai)
 > gives you everything here plus dashboards, SAML SSO, RBAC, SIEM connectors, Hybrid VPC deployment, smart cost routing, semantic caching, EU AI Act compliance logging, and recursive loop protection —
 > no Docker required. 1M free credits, no credit card.
 
@@ -168,7 +168,7 @@ The SDK adds typed responses, structured error handling (`DLPBlockError`, `Budge
 
 ```
                            ┌─────────────────────────────┐
-                           │        AISG Gateway          │
+                           │        Occludra Gateway      │
     ┌──────────┐           │                              │           ┌──────────────┐
     │          │  POST     │  1. Auth (API key)           │           │              │
     │ Your App ├──────────▸│  2. Resolve provider/model   │──────────▸│ LLM Provider │
@@ -415,7 +415,7 @@ Returns gateway health status and Presidio connectivity.
 ## Project Structure
 
 ```
-aisecuritygateway/
+gateway/
 ├── docker-compose.yml          # Orchestrates gateway + presidio
 ├── .env.example                # Environment variables template
 ├── config/
@@ -450,7 +450,7 @@ aisecuritygateway/
 
 ## Security Model
 
-- **FAIL-CLOSED BY DEFAULT** — if Presidio is unreachable, requests are **blocked**, never forwarded unscanned. Most competing proxies fail-open for convenience. AISG treats an unreachable safety layer as a hard stop.
+- **FAIL-CLOSED BY DEFAULT** — if Presidio is unreachable, requests are **blocked**, never forwarded unscanned. Most competing proxies fail-open for convenience. Occludra treats an unreachable safety layer as a hard stop.
 - **Auth by default** — API key authentication is enabled out of the box
 - **No telemetry** — zero external calls, no analytics, no phone-home
 - **Secret scrubbing** — structured logs automatically mask API keys and tokens
@@ -471,7 +471,7 @@ This split keeps the OSS powerful and transparent while reserving the intelligen
 
 ## OSS vs Cloud
 
-This repo gives you the core AI security proxy. The managed [AI Security Gateway Cloud](https://aisecuritygateway.ai) adds everything you need to run it across teams at scale.
+This repo gives you the core AI security proxy. The managed [Occludra Cloud](https://occludra.ai) adds everything you need to run it across teams at scale.
 
 | | OSS (this repo) | Cloud |
 |---|:---:|:---:|
@@ -500,7 +500,7 @@ This repo gives you the core AI security proxy. The managed [AI Security Gateway
 | EU AI Act compliance logging (hash-chained) | — | Yes |
 | SLA & support | Community | Yes |
 
-[Try the managed cloud free &rarr;](https://aisecuritygateway.ai) — 1M free credits, no credit card required. Includes SSO, RBAC, SIEM, and Hybrid VPC.
+[Try the managed cloud free &rarr;](https://occludra.ai) — 1M free credits, no credit card required. Includes SSO, RBAC, SIEM, and Hybrid VPC.
 
 ### Why are some features cloud-only?
 
@@ -544,23 +544,23 @@ Found a vulnerability? Please read [SECURITY.md](SECURITY.md) for responsible di
 
 ---
 
-### ⭐ If AISG is useful, consider starring the repo — it helps others discover it.
+### ⭐ If Occludra is useful, consider starring the repo — it helps others discover it.
 
 ---
 
 ## Links
 
-- **Website:** [aisecuritygateway.ai](https://aisecuritygateway.ai)
-- **Docs:** [aisecuritygateway.ai/docs](https://aisecuritygateway.ai/docs)
+- **Website:** [occludra.ai](https://occludra.ai)
+- **Docs:** [occludra.ai/docs](https://occludra.ai/docs)
 - **Crunchbase:** [crunchbase.com/organization/ai-security-gateway](https://www.crunchbase.com/organization/ai-security-gateway)
 - **LinkedIn:** [linkedin.com/company/ai-security-gateway](https://www.linkedin.com/company/ai-security-gateway)
-- **X / Twitter:** [@AISGateway](https://x.com/AISGateway)
-- **SAML SSO Docs:** [aisecuritygateway.ai/docs/saml-sso-authentication](https://aisecuritygateway.ai/docs/saml-sso-authentication)
-- **RBAC Docs:** [aisecuritygateway.ai/docs/rbac-team-management](https://aisecuritygateway.ai/docs/rbac-team-management)
-- **SIEM Docs:** [aisecuritygateway.ai/docs/siem-connectors](https://aisecuritygateway.ai/docs/siem-connectors)
-- **Hybrid VPC Docs:** [aisecuritygateway.ai/docs/hybrid-vpc-deployment](https://aisecuritygateway.ai/docs/hybrid-vpc-deployment)
-- **Status:** [status.aisecuritygateway.ai](https://status.aisecuritygateway.ai)
+- **X / Twitter:** [@occludra](https://x.com/occludra)
+- **SAML SSO Docs:** [occludra.ai/docs/saml-sso-authentication](https://occludra.ai/docs/saml-sso-authentication)
+- **RBAC Docs:** [occludra.ai/docs/rbac-team-management](https://occludra.ai/docs/rbac-team-management)
+- **SIEM Docs:** [occludra.ai/docs/siem-connectors](https://occludra.ai/docs/siem-connectors)
+- **Hybrid VPC Docs:** [occludra.ai/docs/hybrid-vpc-deployment](https://occludra.ai/docs/hybrid-vpc-deployment)
+- **Status:** [status.occludra.ai](https://status.occludra.ai)
 
 ---
 
-Built by [Datum Fuse LLC](https://aisecuritygateway.ai) — making AI safe by default.
+Built by [Datum Fuse LLC](https://occludra.ai) — making AI safe by default.

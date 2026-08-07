@@ -1,12 +1,12 @@
 # Security Policy
 
-AISG (AI Security Gateway) is a security product. We take vulnerability reports seriously.
+Occludra (AI Security Gateway) is a security product. We take vulnerability reports seriously.
 
 ## Reporting a Vulnerability
 
 **Please do not open a public GitHub issue for security vulnerabilities.**
 
-Instead, email us at **security@aisecuritygateway.ai** with:
+Instead, email us at **security@occludra.ai** with:
 
 - Description of the vulnerability
 - Steps to reproduce
@@ -38,7 +38,7 @@ We credit all confirmed vulnerability reporters in our release notes (unless you
 
 ## Security Best Practices
 
-When deploying AISG:
+When deploying Occludra:
 
 - Always set a strong `AISG_API_KEY` — never deploy with the default key
 - Run behind a reverse proxy (nginx, Caddy, Traefik) with TLS in production

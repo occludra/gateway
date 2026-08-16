@@ -478,7 +478,7 @@ This repo gives you the core AI security proxy. The managed [Occludra Cloud](htt
 | PII detection & redaction (text) | 13 entity types | 30+ entity types |
 | OCR image scanning | — | Yes |
 | Secret leak prevention | 5 recognizers | Extended (incl. AWS Secret Key, crypto, MAC) |
-| Prompt injection blocking | 5 core patterns | Extended pattern library |
+| Prompt injection blocking | 5 core patterns | Extended library: mid-context override, system-prompt extraction, refusal suppression, SYSTEM OVERRIDE — FP-tuned |
 | Providers | 8 (OpenAI, Anthropic, Groq, Together, Gemini, Mistral, DeepInfra, xAI) | 8+ with managed keys |
 | Routing | Header-based (`x-provider`) | Smart Router + real-time pricing |
 | Failover | — | Automatic intelligent chains |
@@ -494,6 +494,7 @@ This repo gives you the core AI security proxy. The managed [Occludra Cloud](htt
 | RBAC (Owner/Admin/Member/Viewer, 17 permissions) | — | Yes |
 | SIEM connectors (Splunk, Datadog, Sentinel) | — | Yes |
 | Hybrid VPC deployment (prompts stay in your network) | — | Yes |
+| MCP Gateway (policy enforcement on the agent tool plane) | — | Enterprise — private beta |
 | Semantic caching (DLP-aware) | — | Yes |
 | Recursive loop protection (agent retry kill) | — | Yes |
 | Webhook security alerts (HMAC-signed) | — | Yes |

@@ -181,7 +181,12 @@ class RequestContextMiddleware(BaseHTTPMiddleware):
 
 app.add_middleware(RequestContextMiddleware)
 
+from . import dev_mode  # noqa: E402
 from .routers import health, proxy  # noqa: E402
 
 app.include_router(health.router)
 app.include_router(proxy.router)
+# Operator-only credential entry points (API key + Connect with OrcaRouter).
+# Mounted by default because the route handlers themselves run on the gateway's
+# own Bearer-key auth; set AISG_DEV_MODE=false to unmount them entirely.
+app.include_router(dev_mode.router)

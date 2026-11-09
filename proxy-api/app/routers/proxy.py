@@ -20,9 +20,13 @@ import litellm
 import structlog
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
+from pydantic import BaseModel, Field
 
 from .. import dlp, providers
 from ..auth import authenticate
+from ..orcarouter_catalog import ModelCatalog, filter_models
+from ..tokens import ORCA_KEY_PREFIX
+from ..dev_mode import key_state
 from ..config import get_settings, get_provider_keys, get_dlp_policy
 from ..log_utils import mask_key
 from ..models import (
@@ -39,6 +43,50 @@ router = APIRouter(prefix="/v1", tags=["proxy"])
 def _generate_request_id() -> str:
     """Generate a unique opaque request ID (req_ + 16 hex chars)."""
     return f"req_{uuid.uuid4().hex[:16]}"
+
+
+class ModelListRequest(BaseModel):
+    """Model discovery request for the OrcaRouter provider (server-side key)."""
+
+    capability: str = "chat"
+    required_modalities: list[str] = Field(default_factory=list)
+    refresh: bool = False
+
+
+# One catalog cache serves every console session: a successful live discovery
+# is authoritative, and a failure keeps the bounded seed / last-known-good.
+_orcarouter_catalog = ModelCatalog()
+
+
+@router.post("/models/orcarouter")
+async def list_orcarouter_models(body: ModelListRequest, request: Request):
+    """Return the capability-filtered OrcaRouter model list for selectors.
+
+    The provider key is read server-side from gateway.yaml; only non-secret
+    model metadata is returned, so no browser ever holds the API key.
+    """
+    raw_key = request.headers.get("Authorization", "").removeprefix("Bearer ").strip()
+    if authenticate(raw_key) is None:
+        raise HTTPException(status_code=403, detail="Invalid or missing API key")
+    if providers.get_provider(providers.ORCAROUTER_PROVIDER) is None:
+        raise HTTPException(status_code=404, detail="OrcaRouter provider is not registered")
+
+    key = get_provider_keys().get(providers.ORCAROUTER_PROVIDER) or ""
+    result = await _orcarouter_catalog.fetch(key, force=body.refresh)
+    models = filter_models(result.models, capability=body.capability, required_modalities=body.required_modalities)
+    return JSONResponse(
+        {
+            "provider": providers.ORCAROUTER_PROVIDER,
+            "display_name": "OrcaRouter Cyber Inference",
+            "object": "list",
+            "data": models,
+            "catalog_source": result.source,
+            "degraded": result.degraded,
+            "error": result.error,
+            "model_count": len(models),
+        },
+        headers={"Cache-Control": "no-store"},
+    )
 
 
 @router.post("/chat/completions")
@@ -104,6 +152,17 @@ async def chat_completions(
                 f"Add it to gateway.yaml under providers.{provider_name}.api_key",
             },
         )
+
+    if provider_spec.is_orcarouter and api_key.startswith(ORCA_KEY_PREFIX):
+        # Durable key rejected upstream: re-acquisition time, never silent retry.
+        if key_state.current(api_key).needs_reauth:
+            raise HTTPException(
+                status_code=502,
+                detail={
+                    "error": "orcarouter_reauth_required",
+                    "message": "The OrcaRouter key was revoked or rejected. Run: python -m app.orcarouter_cli login",
+                },
+            )
 
     rlog.info("provider_resolved", provider=provider_name, model=model_name)
 

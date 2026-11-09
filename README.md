@@ -23,7 +23,7 @@ Occludra is a vendor-neutral AI governance layer that sits between your applicat
 - **Secret detection** — API keys, AWS credentials, GitHub tokens, private keys
 - **Prompt injection blocking** — detects jailbreak and instruction override attempts
 - **OpenAI SDK compatible** — drop-in replacement, change one line of code
-- **Multi-provider routing** — 8 providers out of the box: OpenAI, Anthropic, Groq, Together, Gemini, Mistral, DeepInfra, xAI — BYOK, swap in config
+- **Multi-provider routing** — 9 providers out of the box: OpenAI, Anthropic, Groq, Together, Gemini, Mistral, DeepInfra, xAI, and OrcaRouter Cyber Inference — BYOK, swap in config
 - **Fail-closed by default** — if the safety layer is down, requests are blocked, never forwarded unscanned
 - **Zero cloud dependencies** — runs entirely on your machine via Docker
 - **No telemetry** — zero external calls, no analytics, no phone-home
@@ -219,6 +219,8 @@ providers:
     api_key: "${DEEPINFRA_API_KEY:-}"
   xai:
     api_key: "${XAI_API_KEY:-}"
+  orcarouter:                       # OrcaRouter Cyber Inference
+    api_key: "${ORCAROUTER_API_KEY:-}"
 
 api_keys:
   - key: "${AISG_API_KEY:-dev-key-change-me}"
@@ -259,10 +261,21 @@ Defines which LLM providers are available and their LiteLLM mapping:
     "gemini": { "litellm_prefix": "gemini", "default_model": "gemini-2.5-flash", "enabled": true },
     "mistral": { "litellm_prefix": "mistral", "default_model": "mistral-large-latest", "enabled": true },
     "deepinfra": { "litellm_prefix": "deepinfra", "default_model": "meta-llama/Llama-3.3-70B-Instruct", "enabled": true },
-    "xai": { "litellm_prefix": "xai", "default_model": "grok-3-mini", "enabled": true }
+    "xai": { "litellm_prefix": "xai", "default_model": "grok-3-mini", "enabled": true },
+    "orcarouter": {
+      "display_name": "OrcaRouter Cyber Inference",
+      "litellm_prefix": "openai",
+      "base_url": "https://api.orcarouter.ai/v1",
+      "default_model": "orcarouter/auto",
+      "enabled": true
+    }
   }
 }
 ```
+
+A provider entry may carry its own `base_url` (and `display_name`); the gateway
+passes it to LiteLLM as `api_base`, so the provider keeps its own identity while
+speaking the OpenAI wire format.
 
 ### `.env`
 
@@ -282,6 +295,7 @@ GEMINI_API_KEY=...
 MISTRAL_API_KEY=...
 DEEPINFRA_API_KEY=...
 XAI_API_KEY=...
+ORCAROUTER_API_KEY=sk-orca-...
 
 AISG_API_KEY=your-secret-key
 ```
@@ -349,7 +363,7 @@ OpenAI-compatible chat completions endpoint.
 |---|---|---|
 | `Authorization` | Yes | `Bearer <your-gateway-api-key>` |
 | `Content-Type` | Yes | `application/json` |
-| `x-provider` | No | Override default provider (`groq`, `openai`, `anthropic`, `together`, `gemini`, `mistral`, `deepinfra`, `xai`) |
+| `x-provider` | No | Override default provider (`groq`, `openai`, `anthropic`, `together`, `gemini`, `mistral`, `deepinfra`, `xai`, `orcarouter`) |
 | `x-model` | No | Override default model |
 
 **Request body:** Standard OpenAI chat completion format.
@@ -459,9 +473,96 @@ gateway/
 
 ---
 
+## OrcaRouter Cyber Inference
+
+[OrcaRouter](https://www.orcarouter.ai) is an OpenAI-compatible AI gateway that routes many providers behind one endpoint, and also runs gateway-level, zero-trust security for AI agents on the same endpoint — screening every prompt/response and governing every tool call on a default-deny basis, with no application code changes.
+
+Occludra's `orcarouter` provider is the blue-team half of that pair: this proxy
+enforces its DLP, injection and secret policy and then forwards to OrcaRouter at
+`https://api.orcarouter.ai/v1`. Cyber models for your red team, gateway controls
+for your blue team: [OrcaRouter provider page](https://www.orcarouter.ai/cyber) ·
+[cyber model catalog](https://www.orcarouter.ai/models?tier=cyber).
+
+Models, in the order the provider recommends them:
+
+| Role | Model | Notes |
+|---|---|---|
+| Default | `orcarouter/auto` | automatic routing; works with any OrcaRouter key |
+| Dedicated cyber (security teams doing authorized work) | `orcacyber-ultra-1.0` (OrcaCyber Ultra), `orcacyber-zero-1.5` (OrcaCyber Zero) | business-verified models; offered only when your key's live catalog lists them |
+| General fallback | `orcarouter/fusion` | |
+
+### Credentials: API key or Connect with OrcaRouter
+
+Both entry points end in the same `sk-orca-` API key stored in
+`providers.orcarouter.api_key` (usually via `ORCAROUTER_API_KEY`); the
+inference path cannot tell them apart.
+
+```bash
+# 1) paste an existing key
+cd proxy-api && python -m app.orcarouter_cli api-key
+
+# 2) sign in with your OrcaRouter account (OAuth 2.0 + PKCE, S256)
+python -m app.orcarouter_cli login             # loopback redirect (Flow A)
+python -m app.orcarouter_cli login --flow oob  # show-me-a-code (Flow B)
+```
+
+`login` opens `https://www.orcarouter.ai/auth`, receives a one-time code on
+`http://127.0.0.1:<port>/cb`, verifies `state`, and exchanges the code at
+`https://www.orcarouter.ai/api/v1/auth/keys`. No client secret and no
+pre-registered redirect URI are involved; the returned key belongs to your
+OrcaRouter account, is billed there, and is revocable from
+`https://www.orcarouter.ai/console/authorized-apps`. The key is durable — there
+is no refresh token — so the gateway reuses it until it is revoked; a `401`
+marks it `needs_reauth` (see `python -m app.orcarouter_cli status`) and
+`/v1/chat/completions` answers `502 orcarouter_reauth_required` until you run
+`api-key` or `login` again.
+
+The same two choices are available over HTTP for a console session that
+authenticates with a gateway key:
+
+| Route | Purpose |
+|---|---|
+| `GET /v1/dev/orcarouter/status` | masked credential state, login lock, both auth methods |
+| `PUT /v1/dev/orcarouter/credentials/api-key` | store a pasted `sk-orca-` key |
+| `DELETE /v1/dev/orcarouter/credentials` | clear the stored key |
+| `POST /v1/dev/orcarouter/connect` | start PKCE, returns the authorize URL |
+| `POST /v1/dev/orcarouter/connect/complete` | exchange the callback code, store the key |
+| `POST /v1/dev/orcarouter/connect/cancel` | release the login lock |
+
+Set `AISG_DEV_MODE=false` to unmount these credential routes.
+
+The auth origin (`https://www.orcarouter.ai`) and the inference origin
+(`https://api.orcarouter.ai/v1`) are configured separately
+(`ORCA_AUTH_BASE_URL`, `ORCA_API_BASE_URL`, or one shared `ORCA_BASE_URL` for
+self-hosted deployments); neither is derived from the other.
+
+### Model discovery
+
+Model IDs come from the provider's live catalog:
+
+```bash
+curl -s http://localhost:8000/v1/models/orcarouter \
+  -H "Authorization: Bearer $AISG_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"capability":"chat","required_modalities":["text","image"],"refresh":true}'
+```
+
+The gateway holds the key server-side, calls
+`GET https://api.orcarouter.ai/v1/models` and returns only model metadata. The
+selector list is filtered by capability: `chat` needs an `openai` /
+`openai-response` / `anthropic` / `gemini` endpoint type and excludes
+image-only, video, rerank and embedding models; an image attachment
+additionally requires `architecture.input_modalities` to list `image`
+(fail-closed). When discovery fails the response is labelled
+`"degraded": true` and falls back to a two-model verified seed —
+`orcarouter/auto` plus `deepseek/deepseek-v4.1-flash` (verified 2026-11-09
+through this provider path) — or the last known-good catalog, never free text.
+
+---
+
 ## Smart Routing: OSS vs Cloud
 
-**OSS (self-hosted):** Route to any of 8 providers using the `x-provider` and `x-model` headers — OpenAI, Anthropic, Groq, Together, Gemini, Mistral, DeepInfra, and xAI. You pick the provider and model, the gateway forwards using your own keys via LiteLLM. Add a provider key, and it's available immediately.
+**OSS (self-hosted):** Route to any of 9 providers using the `x-provider` and `x-model` headers — OpenAI, Anthropic, Groq, Together, Gemini, Mistral, DeepInfra, xAI, and OrcaRouter Cyber Inference. You pick the provider and model, the gateway forwards using your own keys via LiteLLM. Add a provider key, and it's available immediately.
 
 **Cloud (managed):** Full Smart Router with real-time cost optimization, dynamic provider selection (cheapest + fastest for each request), automatic failover chains, live pricing registry, and per-project budget policies. No manual configuration needed.
 
@@ -479,7 +580,7 @@ This repo gives you the core AI security proxy. The managed [Occludra Cloud](htt
 | OCR image scanning | — | Yes |
 | Secret leak prevention | 5 recognizers | Extended (incl. AWS Secret Key, crypto, MAC) |
 | Prompt injection blocking | 5 core patterns | Extended library: mid-context override, system-prompt extraction, refusal suppression, SYSTEM OVERRIDE — FP-tuned |
-| Providers | 8 (OpenAI, Anthropic, Groq, Together, Gemini, Mistral, DeepInfra, xAI) | 8+ with managed keys |
+| Providers | 9 (OpenAI, Anthropic, Groq, Together, Gemini, Mistral, DeepInfra, xAI, OrcaRouter Cyber Inference) | 8+ with managed keys |
 | Routing | Header-based (`x-provider`) | Smart Router + real-time pricing |
 | Failover | — | Automatic intelligent chains |
 | Cost optimization | — | Automatic (cheapest per request) |

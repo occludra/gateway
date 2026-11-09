@@ -3,42 +3,76 @@
     "groq": {
       "litellm_prefix": "groq",
       "default_model": "llama-3.3-70b-versatile",
-      "enabled": true
+      "enabled": true,
+      "display_name": "Groq"
     },
     "openai": {
       "litellm_prefix": "openai",
       "default_model": "gpt-4.1-mini",
-      "enabled": true
+      "enabled": true,
+      "display_name": "OpenAI"
     },
     "anthropic": {
       "litellm_prefix": "anthropic",
       "default_model": "claude-sonnet-4-6-20260217",
-      "enabled": true
+      "enabled": true,
+      "display_name": "Anthropic"
     },
     "together": {
       "litellm_prefix": "together_ai",
       "default_model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-      "enabled": true
+      "enabled": true,
+      "display_name": "Together AI"
     },
     "gemini": {
       "litellm_prefix": "gemini",
       "default_model": "gemini-2.5-flash",
-      "enabled": true
+      "enabled": true,
+      "display_name": "Google Gemini"
     },
     "mistral": {
       "litellm_prefix": "mistral",
       "default_model": "mistral-large-latest",
-      "enabled": true
+      "enabled": true,
+      "display_name": "Mistral AI"
     },
     "deepinfra": {
       "litellm_prefix": "deepinfra",
       "default_model": "meta-llama/Llama-3.3-70B-Instruct",
-      "enabled": true
+      "enabled": true,
+      "display_name": "DeepInfra"
     },
     "xai": {
       "litellm_prefix": "xai",
       "default_model": "grok-3-mini",
-      "enabled": true
+      "enabled": true,
+      "display_name": "xAI"
+    },
+    "orcarouter": {
+      "display_name": "OrcaRouter Cyber Inference",
+      "litellm_prefix": "openai",
+      "base_url": "https://api.orcarouter.ai/v1",
+      "models_url": "https://api.orcarouter.ai/v1/models",
+      "default_model": "orcarouter/auto",
+      "reasoning_models": true,
+      "enabled": true,
+      "description": "Named provider for security teams doing authorized, scoped reasoning work. Routes the gateway's upstream calls to the OrcaRouter API with an sk-orca- API key.",
+      "links": {
+        "brand": "https://www.orcarouter.ai",
+        "provider_page": "https://www.orcarouter.ai/cyber",
+        "cyber_models": "https://www.orcarouter.ai/models?tier=cyber"
+      },
+      "recommended_models": {
+        "default": "orcarouter/auto",
+        "dedicated_cyber": [
+          "orcacyber-ultra-1.0",
+          "orcacyber-zero-1.5"
+        ],
+        "general_fallback": "orcarouter/fusion"
+      },
+      "seed_models": [
+        "deepseek/deepseek-v4.1-flash"
+      ]
     }
   }
 }

@@ -19,6 +19,8 @@ providers:
     api_key: "${DEEPINFRA_API_KEY:-}"
   xai:
     api_key: "${XAI_API_KEY:-}"
+  orcarouter:                       # OrcaRouter Cyber Inference
+    api_key: "${ORCAROUTER_API_KEY:-}"
 
 api_keys:
   - key: "${AISG_API_KEY:-dev-key-change-me}"
